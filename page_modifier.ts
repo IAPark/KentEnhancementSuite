@@ -19,7 +19,7 @@ $(() => {
             var term = 201580; // wish I knew why
             $(row).prepend(
                 `<td class="dddefault" style="border:tan solid 1px;">
-                    <a href="`+get_book_search_url(course_num, department, section, term)+`">
+                    <a href="`+get_book_search_url(course_num, department, section, term)+`" target="_blank">
                         Book
                     </a>
                 </td>`

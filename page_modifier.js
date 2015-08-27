@@ -15,7 +15,7 @@ $(function () {
             var course_num = parseInt(course[1]);
             var section = parseInt(course[2]);
             var term = 201580; // wish I knew why
-            $(row).prepend("<td class=\"dddefault\" style=\"border:tan solid 1px;\">\n                    <a href=\"" + get_book_search_url(course_num, department, section, term) + "\">\n                        Book\n                    </a>\n                </td>");
+            $(row).prepend("<td class=\"dddefault\" style=\"border:tan solid 1px;\">\n                    <a href=\"" + get_book_search_url(course_num, department, section, term) + "\" target=\"_blank\">\n                        Book\n                    </a>\n                </td>");
         }
     });
 });

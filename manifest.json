@@ -7,8 +7,10 @@
 
   "content_scripts": [
     {
-      "matches": ["https://keys.kent.edu/ePROD/zwskfshd.P_ViewPrntSchd"],
-      "js": ["jquery-1.11.3.min.js" ,"page_modifier.js"]
+      "matches": ["https://keys.kent.edu/ePROD/zwskfshd.P_ViewPrntSchd",
+        "https://flashline.kent.edu/cp/render.UserLayoutRootNode.uP?uP_tparam=utf&utf=%2fcp%2fip%2flogin%3fsys%3dbanweb%26url%3dhttps://keys.kent.edu/ePROD/zwskfshd.P_ViewPrntSchd"],
+      "js": ["jquery-1.11.3.min.js" ,"page_modifier.js"],
+      "all_frames": true
     }
   ],
 
