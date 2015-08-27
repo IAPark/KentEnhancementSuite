@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+
+  "name": "Kent State Book Info",
+  "description": "This extension adds an icon to look up books to your schedule",
+  "version": "1.0",
+
+  "content_scripts": [
+    {
+      "matches": ["https://keys.kent.edu/ePROD/zwskfshd.P_ViewPrntSchd"],
+      "js": ["jquery-1.11.3.min.js" ,"page_modifier.js"]
+    }
+  ],
+
+  "permissions": [
+  ]
+}
