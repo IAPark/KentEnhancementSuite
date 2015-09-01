@@ -7,7 +7,6 @@ $(() => {
     top.prepend(`<td class="dddefault" style="background-color:tan;border:tan solid 1px;font-size:-1"><b>Book</b></td>`);
     rows.each((index, row) => {
         if(index%2 != 0) {
-            console.log(row);
             var boxes = $(row).find("td");
             var course_text = boxes[1].innerHTML;
             var course = course_text.split('-');

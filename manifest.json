@@ -1,19 +1,36 @@
 {
   "manifest_version": 2,
 
-  "name": "Kent State Book Info",
-  "description": "This extension adds an icon to look up books to your schedule",
-  "version": "1.0",
+  "name": "Kent Enhancement Suite",
+  "description": "Adding features to FlashLine",
+  "version": "0.0.0.2",
+
+  "icons": {
+    "128": "icon.png"
+  },
+
+  "background": {
+    "scripts": ["background.js"]
+  },
 
   "content_scripts": [
     {
       "matches": ["https://keys.kent.edu/ePROD/zwskfshd.P_ViewPrntSchd",
         "https://flashline.kent.edu/cp/render.UserLayoutRootNode.uP?uP_tparam=utf&utf=%2fcp%2fip%2flogin%3fsys%3dbanweb%26url%3dhttps://keys.kent.edu/ePROD/zwskfshd.P_ViewPrntSchd"],
-      "js": ["jquery-1.11.3.min.js" ,"page_modifier.js"],
+      "js": ["jquery-1.11.3.min.js" ,"book_page_modifier.js", "calendar_page_modifier.js"],
       "all_frames": true
     }
   ],
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqIBEjJnNYDkmufTSvEJtflmYFe9Gy0anoQUK1EzaKsEG5Eaa51AeJ2nyrO+tWfwG8y6ndSqyUMe9nJXel74UVHjhTIW1TjCQpt12QTdIOwAve1C6O6Yf9TQq0zrFJR0Kcq80+5I/jhNUrXkGXiteWUvqzY9NsXhpy7VA5PFPrJJJUyZuF7mYvja6jPMyzQWvGgTKmE7Bp1JTpOXofEX0vUD5fQ+18yz/59o3leUFTsPdHEj0aTm28tWy9v69ryongoq2bbKkyBc9mbRN4wk1jOTIzy0JoUXj0XsMR9Z6GeKHfTOEPZqOe/aX0hUvdlvf/O2WWGbBgt9f7RJQWqt4swIDAQAB",
+
+  "oauth2": {
+    "client_id": "104340935329-sq15j96dj257galo6r9a0vcp0slmgsph.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/calendar"
+    ]
+  },
 
   "permissions": [
+    "identity"
   ]
 }
