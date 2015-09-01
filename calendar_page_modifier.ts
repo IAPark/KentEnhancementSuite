@@ -72,11 +72,11 @@ function add_event_button(title: string, location: string, days: string, time: s
     }
 
     row.append(
-        `<td class="dddefault" style="border:tan solid 1px;">
+        `<td class="dddefault" id="add-to-calendar" style="border:tan solid 1px;">
             <a href="javascript:void(0)">Add to Calendar</a>
          </td>`
     );
-    row.last().click( () => {
+    row.last().find("#add-to-calendar").click( () => {
         add_event(title, location, days_of_week, start, stop, new Date(date_end));
     })
 }
