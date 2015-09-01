@@ -6,7 +6,7 @@ $(() => {
     var table = $(".datadisplaytable").find("tbody");
     var rows = table.find("tr");
     var top = rows.eq(0);
-    top.append(`<td class="dddefault" style="background-color:tan;border:tan solid 1px;font-size:-1"><b>Add</b></td>`);
+    top.append(`<td class="dddefault" style="background-color:tan;border:tan solid 1px;font-size:-1"><b>Calendar</b></td>`);
     rows.each((index, row) => {
         if(index%2 != 0) {
             var boxes = $(row).find("td");
@@ -73,7 +73,7 @@ function add_event_button(title: string, location: string, days: string, time: s
 
     row.append(
         `<td class="dddefault" style="border:tan solid 1px;">
-            <a href="javascript:void(0)">Add</a>
+            <a href="javascript:void(0)">Add to Calendar</a>
          </td>`
     );
     row.last().click( () => {
@@ -90,7 +90,7 @@ function add_event(title: string, location: string, days: string, start: Date, e
             data:
                 JSON.stringify({
                     "summary": title,
-                    "location": "location",
+                    "location": location,
                     "start": {
                         "dateTime": start.toISOString(),
                         "timeZone": "America/New_York"
@@ -109,7 +109,7 @@ function add_event(title: string, location: string, days: string, start: Date, e
             ,
             processData: false,
             contentType: 'application/json',
-            success: (data) => console.log(data)
+            success: (data) => window.alert(title+" added to calendar")
         });
     });
 }

@@ -4,7 +4,7 @@ $(function () {
     var table = $(".datadisplaytable").find("tbody");
     var rows = table.find("tr");
     var top = rows.eq(0);
-    top.append("<td class=\"dddefault\" style=\"background-color:tan;border:tan solid 1px;font-size:-1\"><b>Add</b></td>");
+    top.append("<td class=\"dddefault\" style=\"background-color:tan;border:tan solid 1px;font-size:-1\"><b>Calendar</b></td>");
     rows.each(function (index, row) {
         if (index % 2 != 0) {
             var boxes = $(row).find("td");
@@ -57,7 +57,7 @@ function add_event_button(title, location, days, time, date_range, row) {
         start.setDate(start.getDate() + 1);
         stop.setDate(stop.getDate() + 1);
     }
-    row.append("<td class=\"dddefault\" style=\"border:tan solid 1px;\">\n            <a href=\"javascript:void(0)\">Add</a>\n         </td>");
+    row.append("<td class=\"dddefault\" style=\"border:tan solid 1px;\">\n            <a href=\"javascript:void(0)\">Add to Calendar</a>\n         </td>");
     row.last().click(function () {
         add_event(title, location, days_of_week, start, stop, new Date(date_end));
     });
@@ -70,7 +70,7 @@ function add_event(title, location, days, start, end, date_end) {
             beforeSend: function (xhr) { return xhr.setRequestHeader('Authorization', 'Bearer ' + token); },
             data: JSON.stringify({
                 "summary": title,
-                "location": "location",
+                "location": location,
                 "start": {
                     "dateTime": start.toISOString(),
                     "timeZone": "America/New_York"
@@ -88,7 +88,7 @@ function add_event(title, location, days, start, end, date_end) {
             }),
             processData: false,
             contentType: 'application/json',
-            success: function (data) { return console.log(data); }
+            success: function (data) { return window.alert(title + " added to calendar"); }
         });
     });
 }
