@@ -1,14 +1,6 @@
 /// <reference path="typings/jquery/jquery.d.ts" />
 /// <reference path="typings/chrome/chrome.d.ts" />
-chrome.runtime.sendMessage("authorize", function (token) {
-    console.log("got responce");
-    console.log(token);
-});
-function on_auth_result(result) {
-    if (!result || result.error) {
-        return;
-        console.log(result);
-    }
+$(function () {
     var table = $(".datadisplaytable").find("tbody");
     var rows = table.find("tr");
     var top = rows.eq(0);
@@ -21,48 +13,91 @@ function on_auth_result(result) {
             var time = boxes[8].innerHTML.replace(/&nbsp;/g, '');
             var date_range = boxes[11].innerHTML.replace(/&nbsp;/g, '');
             var title = boxes[3].innerHTML.replace(/&nbsp;/g, '');
-            console.log(title + " " + location + " " + days + " " + +" " + time + " " + +" " + " " + date_range + " " + title);
-            $(row).append("<td class=\"dddefault\" style=\"border:tan solid 1px;\">" +
-                add_event_button(title, location, days, time, date_range) +
-                "</td>");
+            add_event_button(title, location, days, time, date_range, $(row));
         }
     });
-}
-function add_event_button(title, location, days, time, date_range) {
+});
+function add_event_button(title, location, days, time, date_range, row) {
     if (days === "<abbr title=\"To Be Announced\">TBA</abbr>") {
-        return "~~";
+        row.append("<td class=\"dddefault\" style=\"border:tan solid 1px;\">\n                ---\n            </td>");
+        return;
     }
     title = to_title(title);
     var days_of_week = "";
     for (var i = 0; i < days.length; ++i) {
         switch (days[i]) {
             case ("M"):
-                days_of_week.concat("MO,");
+                days_of_week = days_of_week.concat("MO,");
                 break;
             case ("T"):
-                days_of_week.concat("TU,");
+                days_of_week = days_of_week.concat("TU,");
                 break;
             case ("W"):
-                days_of_week.concat("WE,");
+                days_of_week = days_of_week.concat("WE,");
                 break;
             case ("R"):
-                days_of_week.concat("TH,");
+                days_of_week = days_of_week.concat("TH,");
                 break;
             case ("F"):
-                days_of_week.concat("FR,");
+                days_of_week = days_of_week.concat("FR,");
                 break;
             default:
                 console.error(days[i] + " is not a recognized day");
                 break;
         }
     }
-    var start_stop = time.split("-");
-    var start = start_stop[0].trim();
-    var stop = start_stop[1].trim();
     var date_start_end = date_range.split("-");
     var date_start = date_start_end[0].trim();
     var date_end = date_start_end[1].trim();
-    return "\n    <div title=\"Add to Calendar\" class=\"addthisevent\">\n        Add\n        <span class=\"start\">09/14/2015 08:00 AM</span>\n        <span class=\"end\">09/14/2015 10:00 AM</span>\n        <span class=\"timezone\">America/New_York</span>\n        <span class=\"title\">Summary of the event</span>\n        <span class=\"description\">Description of the event</span>\n        <span class=\"location\">Location of the event</span>\n        <span class=\"date_format\">MM/DD/YYYY</span>\n    </div>\n    ";
+    var start_stop = time.split("-");
+    var start = new Date(date_start + " " + start_stop[0].trim());
+    var stop = new Date(date_start + " " + start_stop[1].trim());
+    var days_lookup = ['S', 'M', 'T', 'W', 'R', 'F', 'S'];
+    while (days_lookup[start.getDay()] != days[0]) {
+        start.setDate(start.getDate() + 1);
+        stop.setDate(stop.getDate() + 1);
+    }
+    row.append("<td class=\"dddefault\" style=\"border:tan solid 1px;\">\n            <a href=\"javascript:void(0)\">Add</a>\n         </td>");
+    row.last().click(function () {
+        add_event(title, location, days_of_week, start, stop, new Date(date_end));
+    });
+}
+function add_event(title, location, days, start, end, date_end) {
+    chrome.runtime.sendMessage("authorize", function (token) {
+        $.ajax({
+            type: "POST",
+            url: "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+            beforeSend: function (xhr) { return xhr.setRequestHeader('Authorization', 'Bearer ' + token); },
+            data: JSON.stringify({
+                "summary": title,
+                "location": "location",
+                "start": {
+                    "dateTime": start.toISOString(),
+                    "timeZone": "America/New_York"
+                },
+                "end": {
+                    "dateTime": end.toISOString(),
+                    "timeZone": "America/New_York"
+                },
+                "recurrence": [
+                    " RRULE:FREQ=WEEKLY;WKST=SU;BYDAY=" + days + ";UNTIL=" +
+                        to_string_with_digits(date_end.getFullYear(), 4) +
+                        to_string_with_digits(date_end.getMonth(), 2) +
+                        to_string_with_digits(date_end.getDay(), 2) + "T000000Z"
+                ]
+            }),
+            processData: false,
+            contentType: 'application/json',
+            success: function (data) { return console.log(data); }
+        });
+    });
+}
+function to_string_with_digits(to_string, digits) {
+    var zeroes = "";
+    for (var i = 0; i < digits; i++) {
+        zeroes = zeroes.concat("0");
+    }
+    return (zeroes + to_string).slice(-digits);
 }
 function to_title(title) {
     var words = title.toLowerCase().split(' ');
