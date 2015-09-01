@@ -3,7 +3,7 @@
 
   "name": "Kent Enhancement Suite",
   "description": "Adding features to FlashLine",
-  "version": "0.0.0.2",
+  "version": "0.0.0.4",
 
   "icons": {
     "128": "icon.png"

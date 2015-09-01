@@ -57,8 +57,8 @@ function add_event_button(title, location, days, time, date_range, row) {
         start.setDate(start.getDate() + 1);
         stop.setDate(stop.getDate() + 1);
     }
-    row.append("<td class=\"dddefault\" id=\"add-to-calendar\" style=\"border:tan solid 1px;\">\n            <a href=\"javascript:void(0)\">Add to Calendar</a>\n         </td>");
-    row.last().find("#add-to-calendar").click(function () {
+    row.append("<td class=\"dddefault\" style=\"border:tan solid 1px;\">\n            <a href=\"javascript:void(0)\">Add to Calendar</a>\n         </td>");
+    row.find("td").last().click(function () {
         add_event(title, location, days_of_week, start, stop, new Date(date_end));
     });
 }
